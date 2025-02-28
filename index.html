@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Myszo-Loteria</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&amp;display=swap" rel="stylesheet">
+  <style>
+    body {
+        text-align: center;
+        font-family: 'Roboto', Arial, sans-serif;
+        background-color: #222;
+        color: white;
+    }
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+    }
+    .slot-machine {
+        display: flex;
+        justify-content: center;
+        background: #333;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(255, 215, 0, 0.6);
+    }
+    .slot {
+        width: 120px;
+        height: 120px;
+        border: 3px solid gold;
+        background: black;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5em;
+        margin: 5px;
+        color: white;
+        font-weight: bold;
+    }
+    #spinButton {
+        padding: 15px 30px;
+        font-size: 1.5em;
+        margin-top: 20px;
+        cursor: pointer;
+        background: gold;
+        border: none;
+        border-radius: 5px;
+        color: black;
+        font-weight: bold;
+        box-shadow: 0 4px 10px rgba(255, 215, 0, 0.6);
+    }
+    #spinButton:disabled {
+        background: gray;
+        cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>?? Myszo-Loteria ??</h1>
+    <div class="slot-machine">
+      <div class="slot" id="slot1">
+        ?
+      </div>
+      <div class="slot" id="slot2">
+        ?
+      </div>
+      <div class="slot" id="slot3">
+        ?
+      </div>
+    </div>
+    <button id="spinButton">Spin</button>
+    <h2 id="result"></h2>
+  </div>
+
+  <script>
+    const cuisines = ["Kuchnia Wloska", "Kuchnia Chinska", "Lucky Shot!!!", "Kuchnia Japonska", "Kuchnia Polska"];
+    const vouchers = ["Empik 100 zl", "Empik 150 zl", "FloraPoint 100 zl", "FloraPoint 150 zl", "Dowolna Ksiazka", "Dowolny Kwiatek"];
+    const entertainment = ["Kino", "Bilard", "Kregle"];
+    const maxSpins = 3;
+
+    // Pobranie liczby spinów z localStorage (jeœli istnieje)
+    let spinCount = localStorage.getItem("spinCount") ? parseInt(localStorage.getItem("spinCount")) : 0;
+
+    // Aktualizacja wyniku na stronie
+    const resultText = document.getElementById("result");
+    resultText.textContent = `Pozostalo obrotow: ${maxSpins - spinCount}`;
+
+    const spinButton = document.getElementById("spinButton");
+    if (spinCount >= maxSpins) {
+        spinButton.disabled = true;
+        resultText.textContent = "Osiagnales limit obrotow!";
+    }
+
+    spinButton.addEventListener("click", function() {
+        if (spinCount >= maxSpins) {
+            resultText.textContent = "Osiagnales limit obrotow!";
+            this.disabled = true;
+            return;
+        }
+
+        let slot1 = document.getElementById("slot1");
+        let slot2 = document.getElementById("slot2");
+        let slot3 = document.getElementById("slot3");
+
+        let rand1 = cuisines[Math.floor(Math.random() * cuisines.length)];
+        let rand2 = vouchers[Math.floor(Math.random() * vouchers.length)];
+        let rand3 = entertainment[Math.floor(Math.random() * entertainment.length)];
+
+        slot1.textContent = rand1;
+        slot2.textContent = rand2;
+        slot3.textContent = rand3;
+
+        spinCount++;
+        localStorage.setItem("spinCount", spinCount); // Zapisujemy now¹ wartoœæ spinCount w localStorage
+
+        resultText.textContent = `Pozostalo obrotow: ${maxSpins - spinCount}`;
+
+        if (spinCount >= maxSpins) {
+            spinButton.disabled = true;
+            resultText.textContent = "Osiagnales limit obrotow!";
+        }
+    });
+
+    // Blokada odœwie¿ania strony
+    window.addEventListener("beforeunload", function(event) {
+        if (spinCount < maxSpins) {
+            event.preventDefault();
+            event.returnValue = ""; // Nie pozwala na odœwie¿enie
+        }
+    });
+  </script>
+</body>
+</html>
