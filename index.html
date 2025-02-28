@@ -78,11 +78,11 @@
 
   <script>
     const cuisines = ["Kuchnia Wloska", "Kuchnia Chinska", "Lucky Shot!!!", "Kuchnia Japonska", "Kuchnia Polska"];
-    const vouchers = ["Empik 100 zl", "Empik 150 zl", "FloraPoint 100 zl", "FloraPoint 150 zl", "Dowolna Ksiazka", "Dowolny Kwiatek"];
-    const entertainment = ["Kino", "Bilard", "Kregle"];
+    const vouchers = ["Empik 100 zl", "Empik 150 zl", "FloraPoint 100 zl", "FloraPoint 150 zl", "Dowolna Ksiazka", "Dowolny Kwiatek", "Lucky Shot!!!"];
+    const entertainment = ["Kino", "Bilard", "Kregle", "Lucky Shot!!!"];
     const maxSpins = 3;
 
-    // Pobranie liczby spinów z localStorage (jeœli istnieje)
+    // Pobranie liczby spinÃ³w z localStorage (jeÅ›li istnieje)
     let spinCount = localStorage.getItem("spinCount") ? parseInt(localStorage.getItem("spinCount")) : 0;
 
     // Aktualizacja wyniku na stronie
@@ -115,7 +115,7 @@
         slot3.textContent = rand3;
 
         spinCount++;
-        localStorage.setItem("spinCount", spinCount); // Zapisujemy now¹ wartoœæ spinCount w localStorage
+        localStorage.setItem("spinCount", spinCount); // Zapisujemy nowÄ… wartoÅ›Ä‡ spinCount w localStorage
 
         resultText.textContent = `Pozostalo obrotow: ${maxSpins - spinCount}`;
 
@@ -125,11 +125,11 @@
         }
     });
 
-    // Blokada odœwie¿ania strony
+    // Blokada odÅ›wieÅ¼ania strony
     window.addEventListener("beforeunload", function(event) {
         if (spinCount < maxSpins) {
             event.preventDefault();
-            event.returnValue = ""; // Nie pozwala na odœwie¿enie
+            event.returnValue = ""; // Nie pozwala na odÅ›wieÅ¼enie
         }
     });
   </script>
